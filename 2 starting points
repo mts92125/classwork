@@ -1,0 +1,73 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Jan 22 12:55:59 2020
+
+@author: tindall_smith
+"""
+
+import numpy as np
+import matplotlib.pyplot as p
+
+a = np.zeros((200, 200))
+
+stepChoices=[[-1,0],[0,-1],[1,0],[0,1]]
+
+a[100,100]=1  
+
+startPosA=[]
+startPosB=[]
+
+im = p.imshow(a, interpolation='bicubic', cmap='viridis')
+
+starta=np.random.randint(0,200)
+startb=np.random.randint(0,200)
+
+startAx=np.random.randint(0,4)
+startBx=np.random.randint(0,4)
+
+if startAx==0: startPosA=np.array([0,starta])
+elif startAx==1: startPosA=np.array([199,starta])
+elif startAx==2: startPosA=np.array([starta,0])
+elif startAx==3: startPosA=np.array([starta,199])
+
+if startBx==0: startPosB=np.array([0,startb])
+elif startBx==1: startPosB=np.array([199,startb])
+elif startBx==2: startPosB=np.array([startb,0])
+elif startBx==3: startPosB=np.array([startb,199])
+
+
+i=0
+p.ion()
+while i<1000:
+    i+=1
+    
+    stepa=np.array(stepChoices[np.random.randint(0,4)])
+    stepb=np.array(stepChoices[np.random.randint(0,4)])
+   
+    startPosA=startPosA+stepa
+    startPosB=startPosB+stepb
+   
+    if startPosA[0]>=0 and startPosA[1]>=0 and startPosA[0]<200 and startPosA[1]<200:
+        a[(startPosA-np.array(stepa))[0],(startPosA-np.array(stepa))[1]]=1
+        im.set_data(a) 
+        p.draw()
+        p.pause(0.001)
+    
+    else:
+        startPosA=startPosA-np.array(stepa)
+        
+    if startPosB[0]>=0 and startPosB[1]>=0 and startPosB[0]<200 and startPosB[1]<200:
+        a[(startPosB-np.array(stepb))[0],(startPosB-np.array(stepb))[1]]=1
+        im.set_data(a) 
+        p.draw()
+        p.pause(0.001)
+    
+    else:
+        startPosB=startPosB-np.array(stepb)
+        
+    p.ioff()
+
+p.figure(2)
+p.imshow(a, interpolation='bicubic', cmap='viridis')
+p.show()
