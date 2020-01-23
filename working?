@@ -1,0 +1,55 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Jan 23 10:41:48 2020
+
+@author: tindall_smith
+"""
+
+import numpy as np
+import matplotlib.pyplot as p
+
+a = np.zeros((100,100))
+
+a[99,0:99]=1
+
+stepChoices=[[-1,0],[0,-1],[1,0],[0,1]]
+
+startPos=[]
+ 
+start=np.random.randint(0,100) 
+step=np.array(stepChoices[np.random.randint(0,4)])
+        
+startPos=np.array([0,start])
+print(startPos) 
+
+
+im = p.imshow(a, interpolation='bicubic', cmap='viridis')
+
+i=0
+p.ion()
+while i<1000:
+    i+=1
+    
+    print("Walker Running: "+str(i))
+        
+    print(startPos)
+    
+    step=np.array(stepChoices[np.random.randint(0,4)])
+   
+    startPos=startPos+step
+  
+    if startPos[0]>=0 and startPos[1]>=0 and startPos[0]<200 and startPos[1]<200:
+        a[(startPos-np.array(step))[0],(startPos-np.array(step))[1]]=1
+        im.set_data(a) 
+        p.draw()
+        p.pause(0.001)
+    
+    else:
+        startPos=startPos-np.array(step)
+        
+    p.ioff()
+
+p.figure(2)
+p.imshow(a, interpolation='bicubic', cmap='viridis')
+p.show()
